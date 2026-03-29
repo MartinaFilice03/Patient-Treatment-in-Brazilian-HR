@@ -1,11 +1,18 @@
-# 🏥 Patient-Treatment-Brazilian-HR: Advanced Process Mining Analysis
+# 🏥 Patient-Treatment-Brazilian-HR  
+### Advanced Process Mining Analysis
+
+---
 
 ## 📋 Project Overview
+
 This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **25,000 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
 
 The goal is to move beyond simple descriptive statistics to identify **structural bottlenecks**, **resource imbalances** ("Hero Culture"), and **non-stationary behaviors** that jeopardize patient safety and operational efficiency.
 
+---
+
 ## 🚀 Key Insights & Findings
+
 Based on the analysis of **1,801 valid end-to-end patient traces**:
 
 * **⚠️ The "Acuity 2" Paradox:** Contrary to clinical intuition, **Urgent patients (Acuity 2)** exhibit the **highest Lead Time** (avg. 0.32 days). While Acuity 1 (Critical) cases are fast-tracked, Acuity 2 cases represent the system's primary diagnostic bottleneck, likely due to intensive resource competition.
@@ -14,7 +21,10 @@ Based on the analysis of **1,801 valid end-to-end patient traces**:
 * **⏳ The "Long Tail" Problem:** **Violin Plots** show that while standard protocols (Var 1) are stable, less frequent variants suffer from extreme temporal dispersion, often exceeding the **99th percentile threshold (~31.4 hours)**—the so-called "Zombie Cases".
 * **🧑‍⚕️ "Hero Culture" & Resource Risk:** Resource analysis (Social Network Analysis) shows a dangerous reliance on specific **"Médico Responsável"** roles. This "Hero Culture" represents a Single Point of Failure (SPOF) where process speed depends on individual performance rather than standardized flow.
 
+---
+
 ## 🛠️ The Pipeline
+
 The analysis follows a rigorous **Knowledge Uplift Trail**:
 
 1.  **Ingestion & Mapping:** Converting Brazilian HR data into XES standard attributes (`case:concept:name`, `concept:name`, `time:timestamp`).
@@ -23,20 +33,26 @@ The analysis follows a rigorous **Knowledge Uplift Trail**:
 4.  **Conformance Checking:** Performing intensive **Alignment-based validation** (Log Alignment & Precision computing) with 100% completion across all variants.
 5.  **Optimization:** Iteratively testing 10 noise thresholds (K-tuning) to find the perfect balance between Fitness and Precision.
 
+---
+
 ## 💻 Getting Started
+
 ### Prerequisites
+
 You need **Python 3.x** installed with the following libraries:
 ```bash
 pip install pandas matplotlib seaborn numpy pm4py
+```
 
-## 💻 Usage
+### Usage
 
 Place your dataset file (e.g., `brazilian_hr_log.csv`) in the root directory and run the analysis script:
 
 ```bash
 python brazilian_hr_analysis.py
+```
 
-## 📊 Visualizations
+### 📊 Visualizations
 
 The script generates several critical plots to visualize the process "health":
 

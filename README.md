@@ -1,40 +1,63 @@
-Process Mining: Patient Treatment Flow in Brazilian Healthcare (HR)
-📋 Project Overview
-This repository presents a specialized Process Mining analysis of clinical workflows within a Brazilian Public Hospital (HR - Hospitais de Rede). The dataset contains approximately 25,000 events, representing the journey of patients from Triage to Discharge/Transfer.
+# 🏥 Patient-Treatment-Brazilian-HR: Advanced Process Mining Analysis
 
-The primary objective is to evaluate operational resilience, identify bottlenecks in the Brazilian Unified Health System (SUS) context, and optimize the process model through rigorous Conformance Checking.
+## 📋 Project Overview
+This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **25,000 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
 
-🚀 Strategic Insights (Brazilian HR Case)
-Based on the analysis of 1,801 end-to-end patient traces:
+The goal is to move beyond simple descriptive statistics to identify **structural bottlenecks**, **resource imbalances** ("Hero Culture"), and **non-stationary behaviors** that jeopardize patient safety and operational efficiency.
 
-⚠️ The "Acuity 2" Paradox: In the Brazilian HR context, Urgent patients (Acuity 2) experience the highest Lead Time (avg. 0.32 days). While Acuity 1 (Critical) cases are fast-tracked, Acuity 2 cases suffer from diagnostic queueing, becoming the system's primary bottleneck.
+## 🚀 Key Insights & Findings
+Based on the analysis of **1,801 valid end-to-end patient traces**:
 
-📊 Event Density & "Burstiness": The Dotted Chart highlights a highly non-linear arrival pattern. These "bursts" of patients coincide with shift changes and peak hours, causing temporary system collapses that are visible as vertical clusters in the temporal distribution.
+* **⚠️ The "Acuity 2" Paradox:** Contrary to clinical intuition, **Urgent patients (Acuity 2)** exhibit the **highest Lead Time** (avg. 0.32 days). While Acuity 1 (Critical) cases are fast-tracked, Acuity 2 cases represent the system's primary diagnostic bottleneck, likely due to intensive resource competition.
+* **📊 Arrival "Burstiness":** The **Dotted Chart** reveals a highly non-linear arrival pattern. These "waves" of events cause temporary system collapses, indicating that staffing must be adjusted to intake peaks rather than daily averages to prevent congestion.
+* **📉 Optimal Model Quality:** Through an iterative **K-Tuning optimization**, the model reached an **F1-Score of 0.937** (Fitness: 0.922, Precision: 0.952). This confirms a highly faithful representation of the Brazilian clinical flow, capable of generalizing behaviors without losing accuracy.
+* **⏳ The "Long Tail" Problem:** **Violin Plots** show that while standard protocols (Var 1) are stable, less frequent variants suffer from extreme temporal dispersion, often exceeding the **99th percentile threshold (~31.4 hours)**—the so-called "Zombie Cases".
+* **🧑‍⚕️ "Hero Culture" & Resource Risk:** Resource analysis (Social Network Analysis) shows a dangerous reliance on specific **"Médico Responsável"** roles. This "Hero Culture" represents a Single Point of Failure (SPOF) where process speed depends on individual performance rather than standardized flow.
 
-📉 Optimal Model Quality: To represent the Brazilian clinical flow accurately, the model was tuned to K=7, achieving a Fitness of 0.922 and Precision of 0.952. An F1-Score of 0.937 confirms the model is robust enough for administrative decision-making.
+## 🛠️ The Pipeline
+The analysis follows a rigorous **Knowledge Uplift Trail**:
 
-⏳ Performance Variance: Violin Plots of the Top 10 variants show that while standard protocols (Var 1) are efficient, non-standard deviations lead to extreme "Long Tail" delays, often exceeding the 99th percentile threshold (~31.4 hours).
+1.  **Ingestion & Mapping:** Converting Brazilian HR data into XES standard attributes (`case:concept:name`, `concept:name`, `time:timestamp`).
+2.  **Clinical Cleansing:** Filtering biological outliers (e.g., impossible HR/Temp values) and removing "Zombie Cases" (> 31.4 hours).
+3.  **Process Discovery:** Generating **Process Trees** via **Inductive Miner** to ensure a sound, deadlock-free model.
+4.  **Conformance Checking:** Performing intensive **Alignment-based validation** (Log Alignment & Precision computing) with 100% completion across all variants.
+5.  **Optimization:** Iteratively testing 10 noise thresholds (K-tuning) to find the perfect balance between Fitness and Precision.
 
-🛠️ The Analytical Pipeline
-Data Ingestion: Mapping Brazilian clinical attributes to the XES standard (case:concept:name, concept:name, time:timestamp).
+## 💻 Getting Started
+### Prerequisites
+You need **Python 3.x** installed with the following libraries:
+```bash
+pip install pandas matplotlib seaborn numpy pm4py
 
-Clinical Cleansing: Filtering "Zombie Cases" (extreme outliers) and biological inconsistencies to stabilize the event log.
+## 💻 Usage
 
-Process Discovery: Using the Inductive Miner to extract a hierarchical Process Tree that avoids the "spaghetti model" typical of complex hospital logs.
+Place your dataset file (e.g., `brazilian_hr_log.csv`) in the root directory and run the analysis script:
 
-Optimization: Iterative testing of noise thresholds to balance model complexity with empirical reality.
+```bash
+python brazilian_hr_analysis.py
 
-📊 Key Visualizations
-Category	Chart	Purpose
-Optimization	K-Optimization Table	Summarizing 10 iterations of Fitness/Precision tuning.
-Temporal	Lead Time Histogram	Visualizing the 99th percentile cutoff for "Zombie Case" removal.
-Variability	Violin Plots (Top 10)	Comparing temporal stability across the most frequent Brazilian clinical paths.
-Dynamics	Dotted Chart	Detecting arrival waves and event density over the observation period.
-🧪 Methodological Validation
-The final selected model (K=7) demonstrates high reliability for the Brazilian HR scenario:
+## 📊 Visualizations
 
-Fitness: 0.922 (Explains 92% of actual patient movements).
+The script generates several critical plots to visualize the process "health":
 
-Precision: 0.952 (Avoids over-generalization and "ghost" paths).
+| Category | Chart Type | Analytical Purpose |
+| :--- | :--- | :--- |
+| **Process Models** | **Process Tree** | Discovers a sound, hierarchical model using **Inductive Miner** to avoid "spaghetti" flows. |
+| **Process Models** | **DFG (Directly Follows)** | Highlights the main clinical pathways and frequent transitions between activities. |
+| **Temporal Analysis** | **Histogram + KDE** | Analysis of **Lead Time** distribution and identification of the **99th percentile** threshold. |
+| **Temporal Analysis** | **Violin Plots** | Detailed performance comparison of the **Top-10 variants** showing density and stability. |
+| **Bottlenecks** | **Acuity Boxplots** | Lead Time stratification by **Acuity Level** (identifying the Acuity 2 bottleneck). |
+| **Bottlenecks** | **Dotted Chart** | Visualizes **Arrival Rate** and event density to detect "Burstiness" and intake peaks. |
+| **Optimization** | **Line Chart** | **Fitness/Precision/F1 Score** trade-off analysis used to select the optimal **K=7** threshold. |
+| **Compliance** | **Progress Bars** | Visual confirmation of 100% completion for Log Alignments and Conformance Checking. |
 
-F1-Score: 0.937 (Strong harmonic balance).
+## 🧪 Methodological Highlights
+
+* **Data-Aware Filtering:** We identified and removed **8,289 "dirty" records** (biological inconsistencies and incomplete traces) to ensure discovery algorithms work on high-quality evidence.
+* **Lead Time Stabilization:** Removed **"Zombie Cases"** (traces exceeding **31.4 hours**) to prevent statistical noise and stabilize the Lead Time distribution.
+* **Optimal Modeling (K=7):** Iteratively tested 10 noise thresholds to achieve a **Fitness of 0.922** and a **Precision of 0.952**, maximizing the **F1-Score (0.937)**.
+* **Resource Risk:** Detected a **"Hero Culture"** where clinical throughput heavily depends on specific "Médico Responsável" resources, creating a Single Point of Failure.
+
+---
+
+*Analysis performed using Python & PM4Py for the Brazilian Healthcare (HR) Scenario.*

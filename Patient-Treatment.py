@@ -543,3 +543,71 @@ else:
 print("RECOMMENDATION: Implementing digital self-registration kiosks or digital ")
 print("pre-triage algorithms to manage patient waves (Burstiness) without ")
 print("saturating human staff, especially during peak arrival times.")
+
+##Resource Analysis
+# 1. Count unique patients per doctor
+resource_workload = df.groupby('Médico Responsável')['case:concept:name'].nunique().sort_values(ascending=False)
+
+# 2. Visualization: Top 10 Overloaded Doctors
+plt.figure(figsize=(12, 6))
+sns.barplot(x=resource_workload.head(10).values, y=resource_workload.head(10).index, palette='magma')
+plt.title('Top 10 Doctors by Patient Volume (Workload Analysis)', fontsize=14)
+plt.xlabel('Number of Unique Patients Managed', fontsize=12)
+plt.ylabel('Doctor Identifier', fontsize=12)
+plt.grid(axis='x', linestyle='--', alpha=0.6)
+
+plt.savefig('resource_workload.png')
+plt.show()
+
+# 3. Gini Coefficient / Distribution Insight
+print(f"--- RESOURCE INSIGHTS ---")
+print(f"Total Doctors: {len(resource_workload)}")
+print(f"The top 3 doctors manage {resource_workload.head(3).sum() / resource_workload.sum() * 100:.1f}% of total cases.")
+
+##Temporal Burstiness (Arrival Patterns)
+# 1. Extract hour of arrival from the first event of each case
+df['hour'] = df['time:timestamp'].dt.hour
+arrivals_by_hour = df.groupby('hour')['case:concept:name'].nunique()
+
+# 2. Visualization
+plt.figure(figsize=(10, 5))
+plt.plot(arrivals_by_hour.index, arrivals_by_hour.values, marker='o', linestyle='-', color='blue')
+plt.fill_between(arrivals_by_hour.index, arrivals_by_hour.values, color='blue', alpha=0.1)
+plt.title('Patient Arrival Density by Hour (Daily Cycle)', fontsize=14)
+plt.xlabel('Hour of the Day (0-23)', fontsize=12)
+plt.ylabel('Number of New Patients', fontsize=12)
+plt.xticks(range(0, 24))
+plt.grid(True, alpha=0.3)
+
+plt.savefig('arrival_burstiness.png')
+plt.show()
+
+##Variant Analysis (Process Complexity)
+from pm4py.statistics.traces.generic.log import case_statistics
+
+# 1. Check if the filtered log is empty; if so, use the full log to avoid errors
+log_to_analyze = log_filtered if len(log_filtered) > 0 else log
+
+# 2. Get variant statistics
+variants_stats = case_statistics.get_variant_statistics(log_to_analyze)
+
+# 3. Sort variants by frequency (highest to lowest)
+variants_stats = sorted(variants_stats, key=lambda x: x['count'], reverse=True)
+
+# 4. Create a DataFrame for professional reporting
+top_10_variants = pd.DataFrame(variants_stats[:10])
+
+print(f"Total unique process variants found: {len(variants_stats)}")
+
+# 5. Dynamic column handling to avoid KeyError
+if not top_10_variants.empty:
+    print("\n--- TOP 10 PROCESS VARIANTS ---")
+    # We print the whole DataFrame to see the available columns
+    print(top_10_variants)
+
+    # 6. Insight for the report
+    most_freq_coverage = (top_10_variants.iloc[0]['count'] / len(log_to_analyze)) * 100
+    print(f"\nInsight: The most frequent variant covers only {most_freq_coverage:.2f}% of cases.")
+    print("Conclusion: High process fragmentation detected in the Brazilian HR.")
+else:
+    print("No variants found to analyze.")

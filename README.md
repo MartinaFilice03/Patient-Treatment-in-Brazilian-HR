@@ -5,7 +5,7 @@
 
 ## 📋 Project Overview
 
-This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **25,000 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
+This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **3093 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
 
 The goal is to move beyond simple descriptive statistics to identify **structural bottlenecks**, **resource imbalances** ("Hero Culture"), and **non-stationary behaviors** that jeopardize patient safety and operational efficiency.
 
@@ -13,12 +13,12 @@ The goal is to move beyond simple descriptive statistics to identify **structura
 
 ## 🚀 Key Insights & Findings
 
-Based on the analysis of **1,801 valid end-to-end patient traces**:
+Based on the analysis of 443 valid end-to-end patient traces (comprising 3,093 clinical events):
 
-* **⚠️ The "Acuity 2" Paradox:** Contrary to clinical intuition, **Urgent patients (Acuity 2)** exhibit the **highest Lead Time** (avg. 0.32 days). While Acuity 1 (Critical) cases are fast-tracked, Acuity 2 cases represent the system's primary diagnostic bottleneck, likely due to intensive resource competition.
+* **⚠️ The "Acuity 2" Paradox:** Contrary to clinical intuition, **Urgent patients (Acuity 2)** exhibit the **highest Lead Time** (avg. 0.32 days). While Acuity 1 (Critical with 0.25 days) cases are fast-tracked, Acuity 2 cases represent the system's primary diagnostic bottleneck, likely due to intensive resource competition.
 * **📊 Arrival "Burstiness":** The **Dotted Chart** reveals a highly non-linear arrival pattern. These "waves" of events cause temporary system collapses, indicating that staffing must be adjusted to intake peaks rather than daily averages to prevent congestion.
 * **📉 Optimal Model Quality:** Through an iterative **K-Tuning optimization**, the model reached an **F1-Score of 0.937** (Fitness: 0.922, Precision: 0.952). This confirms a highly faithful representation of the Brazilian clinical flow, capable of generalizing behaviors without losing accuracy.
-* **⏳ The "Long Tail" Problem:** **Violin Plots** show that while standard protocols (Var 1) are stable, less frequent variants suffer from extreme temporal dispersion, often exceeding the **99th percentile threshold (~31.4 hours)**—the so-called "Zombie Cases".
+* **⏳ The "Long Tail" Problem:** **Violin Plots** show that while standard protocols (Var 1) are stable, less frequent variants suffer from extreme temporal dispersion, often exceeding the **99th percentile threshold (the cases that pass 5.17 hours are considered statistical outliers)**—the so-called "Zombie Cases".
 * **🧑‍⚕️ "Hero Culture" & Resource Risk:** Resource analysis (Social Network Analysis) shows a dangerous reliance on specific **"Médico Responsável"** roles. This "Hero Culture" represents a Single Point of Failure (SPOF) where process speed depends on individual performance rather than standardized flow.
 
 ---
@@ -28,7 +28,7 @@ Based on the analysis of **1,801 valid end-to-end patient traces**:
 The analysis follows a rigorous **Knowledge Uplift Trail**:
 
 1.  **Ingestion & Mapping:** Converting Brazilian HR data into XES standard attributes (`case:concept:name`, `concept:name`, `time:timestamp`).
-2.  **Clinical Cleansing:** Filtering biological outliers (e.g., impossible HR/Temp values) and removing "Zombie Cases" (> 31.4 hours).
+2.  **Clinical Cleansing:** Filtering biological outliers and removing "Zombie Cases".
 3.  **Process Discovery:** Generating **Process Trees** via **Inductive Miner** to ensure a sound, deadlock-free model.
 4.  **Conformance Checking:** Performing intensive **Alignment-based validation** (Log Alignment & Precision computing) with 100% completion across all variants.
 5.  **Optimization:** Iteratively testing 10 noise thresholds (K-tuning) to find the perfect balance between Fitness and Precision.
@@ -69,8 +69,8 @@ The script generates several critical plots to visualize the process "health":
 
 ## 🧪 Methodological Highlights
 
-* **Data-Aware Filtering:** We identified and removed **8,289 "dirty" records** (biological inconsistencies and incomplete traces) to ensure discovery algorithms work on high-quality evidence.
-* **Lead Time Stabilization:** Removed **"Zombie Cases"** (traces exceeding **31.4 hours**) to prevent statistical noise and stabilize the Lead Time distribution.
+* **Data-Aware Filtering:** identified and removed **8,289 "dirty" records** (biological inconsistencies and incomplete traces) to ensure discovery algorithms work on high-quality evidence.
+* **Lead Time Stabilization:** Removed **"Zombie Cases"** to prevent statistical noise and stabilize the Lead Time distribution.
 * **Optimal Modeling (K=7):** Iteratively tested 10 noise thresholds to achieve a **Fitness of 0.922** and a **Precision of 0.952**, maximizing the **F1-Score (0.937)**.
 * **Resource Risk:** Detected a **"Hero Culture"** where clinical throughput heavily depends on specific "Médico Responsável" resources, creating a Single Point of Failure.
 

@@ -5,7 +5,7 @@
 
 ## 📋 Project Overview
 
-This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **3093 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
+This project performs an advanced **Process Mining analysis** on a real-world dataset comprising **3094 clinical records** from a Brazilian Public Hospital (**HR - Hospitais de Rede**). By leveraging the **PM4Py** framework, the analysis transforms raw, noisy hospital logs into actionable strategic insights within the **SUS (Unified Health System)** context.
 
 The goal is to move beyond simple descriptive statistics to identify **structural bottlenecks**, **resource imbalances** ("Hero Culture"), and **non-stationary behaviors** that jeopardize patient safety and operational efficiency.
 
@@ -13,7 +13,7 @@ The goal is to move beyond simple descriptive statistics to identify **structura
 
 ## 🚀 Key Insights & Findings
 
-Based on the analysis of 443 valid end-to-end patient traces (comprising 3,093 clinical events):
+Based on the analysis of 443 valid end-to-end patient traces (comprising 3,094 clinical events):
 
 * **⚠️ The "Acuity 2" Paradox:** Contrary to clinical intuition, **Urgent patients (Acuity 2)** exhibit the **highest Lead Time** (avg. 0.32 days). While Acuity 1 (Critical with 0.25 days) cases are fast-tracked, Acuity 2 cases represent the system's primary diagnostic bottleneck, likely due to intensive resource competition.
 * **📊 Arrival "Burstiness":** The **Dotted Chart** reveals a highly non-linear arrival pattern. These "waves" of events cause temporary system collapses, indicating that staffing must be adjusted to intake peaks rather than daily averages to prevent congestion.

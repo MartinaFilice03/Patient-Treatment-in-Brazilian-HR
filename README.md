@@ -39,8 +39,10 @@ The analysis follows a rigorous **Knowledge Uplift Trail**:
 
 ### Prerequisites
 
-You need **Python 3.x** installed with the following libraries:
+You need **Python 3.x**. Since some systems (e.g., macOS with Homebrew) prevent global package installation, create a virtual environment and install the required libraries inside it:
 ```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install pandas matplotlib seaborn numpy pm4py
 ```
 
@@ -49,8 +51,11 @@ pip install pandas matplotlib seaborn numpy pm4py
 Place your dataset file (e.g., `brazilian_hr_log.csv`) in the root directory and run the analysis script:
 
 ```bash
-python brazilian_hr_analysis.py
+python Patient-Treatment.py
 ```
+
+⚠️ Note:
+This project was developed using Google Colab.  If you want to run it locally, remove the Google Drive mounting  and update the dataset path accordingly.
 
 ### 📊 Visualizations
 
